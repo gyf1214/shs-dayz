@@ -1,0 +1,6 @@
+#vendor
+vendor/
+
+Game.exe
+*.dll
+Scripts.rvdata
