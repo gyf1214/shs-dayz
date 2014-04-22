@@ -1,0 +1,10 @@
+{
+	"name"		: "prolog",
+	"dialogue"	: [
+		"Hello!",
+		"World!",
+		"It's Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong",
+		"$1",
+		"这句话很长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长"
+	]
+}

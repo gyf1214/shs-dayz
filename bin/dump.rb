@@ -3,10 +3,16 @@ require_all 'lib'
 
 include Parser
 
-data = Array.new
+key = ARGV[0].downcase
+output = ARGV[1]
+files = ARGV[2..-1]
 
-for i in 1..(ARGV.size - 1)
-	data.push tag: ARGV[i], content: File.read(ARGV[i])
+
+case key
+when 'script'
+	dump = dump_script load_script(files)
+when 'text'
+	dump = load_text files
 end
+dump_data output, dump unless dump.nil?
 
-dump_data ARGV[0], dump_script(data)

@@ -31,18 +31,18 @@ class Scene
 	end
 
 	def post_start
-		@active.open unless @active.nil?
 	end
 
 	def update
 		Graphics.update
 		Input.update
 		Mouse.update
-		@active.update unless @active.nil?
+		@windows.each do |window|
+			window.update
+		end
 	end
 
 	def pre_terminate
-		@active.close unless @active.nil?
 	end
 
 	def terminate
@@ -52,7 +52,6 @@ class Scene
 
 	def create_windows
 		@windows = Array.new
-		@active = nil
 	end
 
 	def dispose_windows

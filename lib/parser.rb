@@ -1,9 +1,16 @@
 require 'zlib'
+require 'json'
 
 module Parser
 	def load_data path
 		File.open path, 'rb' do |f|
 			Marshal.load f
+		end
+	end
+
+	def dump_data path, data
+		File.open path, 'wb' do |f|
+			Marshal.dump data, f
 		end
 	end
 
@@ -17,6 +24,14 @@ module Parser
 		ret
 	end
 
+	def load_script files
+		data = Array.new
+		files.each do |path|
+			data.push tag: path, content: File.read(path)
+		end
+		data
+	end
+
 	def dump_script data
 		rad = Random.new
 		ret = Array.new
@@ -27,9 +42,13 @@ module Parser
 		ret
 	end
 
-	def dump_data path, data
-		File.open path, 'wb' do |f|
-			Marshal.dump data, f
+	def load_text files
+		data = Hash.new
+		files.each do |path|
+			rec = JSON.parse File.read(path).force_encoding("utf-8")
+			next if rec['name'].nil?
+			data[rec['name']] = rec
 		end
-	end 
+		data
+	end
 end

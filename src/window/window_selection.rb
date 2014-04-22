@@ -5,9 +5,9 @@ class WindowSelection < WindowBase
 	def initialize x, y, width, height, items = Array.new
 		@items = items
 		@index = if items.empty? then -1 else 0 end
-		@listener = Hash.new
 		super x, y, width, height
 		refresh
+		bind_ok method(:process_ok)
 	end
 
 	def contents_height
@@ -43,22 +43,16 @@ class WindowSelection < WindowBase
 	end
 
 	def item_rect index
-		width = contents.text_size(@items[index]).width + MARGIN * 2
-		height = WLH
-		y = index * WLH
-		if width > contents.width
-			width = contents.width
-			x = 0
+		rect = text_size @items[index]
+		rect.width += MARGIN * 2
+		rect.y = index * WLH
+		if rect.width > contents.width
+			rect.width = contents.width
+			rect.x = 0
 		else
-			x = (contents.width - width) / 2
+			rect.x = (contents.width - rect.width) / 2
 		end
-		Rect.new x, y, width, height
-	end
-
-	def movable?
-		return false if not visible or not active
-		return false if index < 0 or index >= @items.size
-		true
+		rect
 	end
 
 	def move direction
@@ -78,6 +72,7 @@ class WindowSelection < WindowBase
 	end
 
 	def mouse_update
+		super
 		if Mouse.over? self
 			y = Mouse.pos[1] - self.y - MARGIN
 			@index = y / WLH
@@ -88,19 +83,14 @@ class WindowSelection < WindowBase
 	end
 
 	def key_update
+		super
 		move -1 if Input.repeat? Input::UP
 		move 1 if Input.repeat? Input::DOWN
-		call_listener @index if Input.trigger? Input::C
-		call_listener :back if Input.trigger? Input::B
 	end
 
 	def update
 		super
-		if self.active
-			key_update
-			mouse_update
-			cursor_update
-		end
+		cursor_update
 	end
 
 	def update_padding
@@ -111,9 +101,9 @@ class WindowSelection < WindowBase
 
 	def draw_item index, enable = true
 		rect = item_rect index
-		self.contents.clear_rect rect
-		self.contents.font.color.alpha = if enable then 255 else 127 end
-		self.contents.draw_text rect, @items[index], 1
+		contents.clear_rect rect
+		contents.font.color.alpha = if enable then 255 else 127 end
+		contents.draw_text rect, @items[index], 1
 	end
 
 	def refresh
@@ -123,18 +113,10 @@ class WindowSelection < WindowBase
 		end
 	end
 
-	def bind button, listener
-		@listener[button] = listener
-	end
-
 	def bind_buttons listener
 		@items.size.times do |i|
 			@listener[i] = listener
 		end
-	end
-
-	def bind_back listener
-		bind :back, listener
 	end
 
 	def bind_all listener
@@ -142,11 +124,7 @@ class WindowSelection < WindowBase
 		bind_back listener
 	end
 
-	def listen? button
-		not @listener[button].nil?
-	end
-
-	def call_listener button
-		@listener[button].call(button) if listen? button
+	def process_ok button
+		call_listener @index
 	end
 end

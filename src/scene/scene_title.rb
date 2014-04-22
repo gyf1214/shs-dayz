@@ -7,17 +7,25 @@ class SceneTitle < Scene
 		Assets.system 'title.bmp'
 	end
 
+	def post_start
+		super
+		@windows[0].open
+	end
+
+	def pre_terminate
+		@windows[0].open
+		super
+	end
+
 	def create_windows
 		super
 		commands = ["New Game", "Load Game", "Exit"]
-		window = WindowSelection.new (1024 - 200) / 2, 600, 200, 104, commands
-		window.openness = 0
+		window = WindowSelection.new (1024 - 200) / 2, 500, 200, 104, commands
 		window.bind_all method(:main_listener)
 		@windows.push window
-		@active = window
+
 		commands = ["Back"]
-		window = WindowSelection.new (1024 - 500) / 2, 300, 500, 250, commands
-		window.openness = 0
+		window = WindowSelection.new (1024 - 500) / 2, 200, 500, 250, commands
 		window.bind_all method(:another_listener)
 		@windows.push window
 	end
@@ -29,16 +37,15 @@ class SceneTitle < Scene
 		when 0
 			Game.call SceneMain
 		when 1
-			@active = @windows[1]
-			@active.open
+			@windows[0].deactivate
+			@windows[1].open
 		when 2
 			Game.ret
 		end
 	end
 
 	def another_listener button
-		@active.close
-		update until @active.close?
-		@active = @windows[0]
+		@windows[1].close
+		@windows[0].activate
 	end
 end
