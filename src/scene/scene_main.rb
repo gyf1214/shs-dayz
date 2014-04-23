@@ -5,7 +5,7 @@ class SceneMain < Scene
 
 	def start
 		super
-		process_message false
+		process_message
 	end
 
 	def post_start
@@ -44,7 +44,10 @@ class SceneMain < Scene
 	end
 
 	def page_listener button
-		a = process_message until a
+		loop do
+			Message.pop
+			break if process_message
+		end
 	end
 
 	def back_menu button
@@ -55,17 +58,19 @@ class SceneMain < Scene
 	def menu_listener button
 		case button
 		when 0
-			
+			Game.save Assets.save_path(0)
+			@menu_window.close
+			@main_window.activate
 		when 1
-			Game.call SceneSaveLoad.new
+			Game.load Assets.save_path(0)
+			Game.goto SceneMain.new
 		when 2
 			Game.ret
 		end
 	end
 
-	def process_message pop = true
+	def process_message
 		return true if Message.empty?
-		Message.pop if pop
 		msg = Message.top
 		case msg[:type]
 		when :text
@@ -76,7 +81,12 @@ class SceneMain < Scene
 			skip_message unless @choice == 0
 			@choice -= 1
 			return false
+		when :do
+			return false
 		when :end
+			return false
+		when :break
+			skip_message 2
 			return false
 		when :fin
 			@main_window.close
@@ -84,16 +94,21 @@ class SceneMain < Scene
 		true
 	end
 
-	def skip_message
-		Message.pop until Message.top[:type] == :end
-		Message.pop
+	def skip_message indent = 0
+		loop do
+			Message.pop
+			a = Message.top
+			indent += 1 if a[:type] == :do
+			indent -= 1 if a[:type] == :end
+			break if indent == 0
+		end
 	end
 
 	def process_select button
 		@choice = button
 		@select_window.close
 		@main_window.activate
-		a = process_message until a
+		page_listener 0
 	end
 
 	def process_ok

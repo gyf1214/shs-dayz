@@ -1,6 +1,4 @@
 module Message
-	attr_reader :chapter
-
 	@data = Array.new
 
 	def self.push str
@@ -14,24 +12,39 @@ module Message
 	end
 
 	def self.pop
-		@data.shift
+		ret = @data[@index]
+		@index += 1
+		ret
 	end
 
 	def self.top
-		@data[0]
+		@data[@index]
 	end
 
 	def self.empty?
-		@data.empty?
+		@index >= @data.size
 	end
 
 	def self.clear
 		@data.clear
+		@index = 0
 	end
 
-	def self.chapter name
+	def self.chapter
+		@chapter
+	end
+
+	def self.chapter= name
 		@chapter = name
 		clear
 		append Assets.dialogue(name)
+	end
+
+	def self.index
+		@index
+	end
+
+	def self.index= index
+		@index = index
 	end
 end

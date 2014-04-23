@@ -25,4 +25,8 @@ module Assets
 		end
 		@cache[path]
 	end
+
+	def self.save_path index
+		"save/#{index}.zzy"
+	end
 end

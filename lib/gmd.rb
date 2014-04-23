@@ -23,6 +23,7 @@ module GMD
 	def self.select
 		@select = Array.new
 		@now.push type: :select, choices: @select
+		@now.push type: :do
 		yield
 		@now.push type: :end
 	end
@@ -30,7 +31,9 @@ module GMD
 	def self.choice name
 		@select.push name
 		@now.push type: :choice
+		@now.push type: :do
 		yield
+		@now.push type: :break
 		@now.push type: :end
 	end
 

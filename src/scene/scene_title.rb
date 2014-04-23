@@ -35,11 +35,11 @@ class SceneTitle < Scene
 		when :back
 			Game.ret
 		when 0
-			Message.chapter 'prolog'
+			Message.chapter = 'prolog'
 			Game.call SceneMain.new
 		when 1
-			@windows[0].deactivate
-			@windows[1].open
+			Game.load Assets.save_path(0)
+			Game.call SceneMain.new
 		when 2
 			Game.ret
 		end

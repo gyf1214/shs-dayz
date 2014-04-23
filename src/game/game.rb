@@ -27,4 +27,17 @@ module Game
 		@stack.pop
 		@scene = @stack.last
 	end
+
+	def self.save path
+		data = Hash.new
+		data[:chapter] = Message.chapter
+		data[:index] = Message.index
+		save_data data, path
+	end
+
+	def self.load path
+		data = load_data path
+		Message.chapter = data[:chapter]
+		Message.index = data[:index]
+	end
 end
