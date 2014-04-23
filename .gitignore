@@ -1,6 +1,7 @@
 #vendor
 vendor/
 
+#binary
 Game.exe
 *.dll
-Scripts.rvdata
+*.zzy
