@@ -40,6 +40,9 @@ class Scene
 		@windows.each do |window|
 			window.update
 		end
+		process_ok if Mouse.click?(1)
+		process_ok if Input.trigger? Input::C
+		process_back if Input.trigger? Input::B
 	end
 
 	def pre_terminate
@@ -72,5 +75,11 @@ class Scene
 	def dispose_background
 		@background.bitmap.dispose
 		@background.dispose
+	end
+
+	def process_ok
+	end
+
+	def process_back
 	end
 end

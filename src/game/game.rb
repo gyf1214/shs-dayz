@@ -10,7 +10,7 @@ module Game
 
 	def self.goto scene
 		@stack.pop
-		@scene = scene.new
+		@scene = scene
 		@stack.push @scene
 	end
 
@@ -19,7 +19,7 @@ module Game
 	end
 
 	def self.call scene
-		@scene = scene.new
+		@scene = scene
 		@stack.push @scene
 	end
 

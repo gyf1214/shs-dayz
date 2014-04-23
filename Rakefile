@@ -23,7 +23,7 @@ end
 
 task :text do
 	output = "assets/data/text.zzy"
-	files = FileList["assets/data/src/text/*.json"]
+	files = FileList["assets/data/src/text/*.rb"]
 
 	puts "Dump Texts"
 	puts "Source Files:"

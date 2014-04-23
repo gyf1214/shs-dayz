@@ -15,9 +15,32 @@ class WindowSelection < WindowBase
 		[h - h % WLH, @items.size * WLH].max
 	end
 
-	def index=
+	def auto_width
+		width = 0
+		@items.size.times do |i|
+			width = [item_rect(i).width, width].max
+		end
+		self.width = width + MARGIN * 2
+		update_padding
+		create_contents
+		refresh
+	end
+
+	def auto_height
+		self.height = contents_height + MARGIN * 2
+		update_padding
+		create_contents
+		refresh
+	end
+
+	def index= index
 		@index = index
-		update_cursor
+		cursor_update
+	end
+
+	def items= items
+		@items = items
+		refresh
 	end
 
 	def top
@@ -73,11 +96,10 @@ class WindowSelection < WindowBase
 
 	def mouse_update
 		super
-		if Mouse.over? self
+		if Mouse.over?(self) and Mouse.move?
 			y = Mouse.pos[1] - self.y - MARGIN
+			return if y / WLH < 0 or y / WLH > @items.size - 1
 			@index = y / WLH
-			@index = 0 if @index < 0
-			@index = @items.size - 1 if @index > @items.size - 1
 			call_listener @index if Mouse.click?(1)
 		end
 	end

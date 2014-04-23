@@ -45,9 +45,7 @@ module Parser
 	def load_text files
 		data = Hash.new
 		files.each do |path|
-			rec = JSON.parse File.read(path).force_encoding("utf-8")
-			next if rec['name'].nil?
-			data[rec['name']] = rec
+			GMD.process File.read(path).force_encoding("utf-8"), data
 		end
 		data
 	end

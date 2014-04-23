@@ -9,7 +9,7 @@ module Assets
 	end
 
 	def self.dialogue name
-		data("text")[name]['dialogue']
+		data("text")[name]
 	end
 
 	def self.load_bitmap path

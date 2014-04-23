@@ -7,23 +7,23 @@ class WindowMessage < WindowBase
 
 	def draw_character c
 		rect = text_size c
+		rect.x, rect.y = @x, @y
 		if @x + rect.width > contents.width - MARGIN
 			@x = 8
 			@y += WLH
 		else
 			@x += rect.width
 		end
-		rect.x, rect.y = @x, @y
 		contents.clear_rect rect
 		contents.draw_text rect, c
 	end
 
-	def next_page
-		@text = Message.pop
+	def next_page text
+		@text = text
 		return if @text.nil?
 		contents.clear
-		@x = contents.width
-		@y = -WLH
+		@x = 8
+		@y = 0
 		@showing = true
 	end
 
@@ -45,7 +45,11 @@ class WindowMessage < WindowBase
 		if @showing
 			next_character while @showing
 		else
-			next_page
+			call_listener :page
 		end
+	end
+
+	def bind_page listener
+		bind :page, listener
 	end
 end

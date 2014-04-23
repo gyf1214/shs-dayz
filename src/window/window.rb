@@ -33,6 +33,11 @@ class WindowBase < Window
 		self.active and open?
 	end
 
+	def center
+		self.x = (1024 - width) / 2
+		self.y = (640 - height) / 2
+	end
+
 	def update
 		super
 		if @opening
@@ -78,6 +83,7 @@ class WindowBase < Window
 	end
 
 	def mouse_update
+		call_listener :ok if Mouse.click?(1) && Mouse.over?(self)
 	end
 
 	def bind button, listener
