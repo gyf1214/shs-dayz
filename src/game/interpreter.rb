@@ -39,8 +39,19 @@ module Interpreter
 		when :flag
 			Flag[msg[:key]] = msg[:val]
 			return false
+		when :add
+			Flag[msg[:key]] += msg[:val]
+			return false
+		when :mul
+			Flag[msg[:key]] *= msg[:val]
+			return false
 		when :since
-			skip_message unless Flag[msg[:key]]
+			if Flag[msg[:key]].instance_of? TrueClass or Flag[msg[:key]].instance_of? FalseClass
+				tf = Flag[msg[:key]] == msg[:val]
+			else
+				tf = Flag[msg[:key]] >= msg[:val]
+			end
+			skip_message unless tf
 			return false
 		when :goto
 			Message.goto msg[:key]

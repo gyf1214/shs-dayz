@@ -1,5 +1,7 @@
 module GMD
 	class Character
+		attr_accessor :display
+
 		def initialize name, display
 			@name = name
 			@display = display
@@ -23,10 +25,12 @@ module GMD
 	def self.character c
 		if c.instance_of? Hash
 			c.each do |k, v|
-				@characters.store k, Character.new(k, v)
+				@characters.store k, Character.new(k, v) unless @characters.key? k
+				@characters[k].display = v
 			end
 		else
-			@characters.store c, Character.new(c, c.to_s)
+			@characters.store c, Character.new(c, c.to_s) unless @characters.key? k
+			@characters[k].display = v
 		end
 	end
 
@@ -89,8 +93,8 @@ module GMD
 		@now.push type: :flag, key: x, val: y
 	end
 
-	def self.since x
-		@now.push type: :since, key: x
+	def self.since x, y = true
+		@now.push type: :since, key: x, val: y
 		@now.push type: :do
 		yield
 		@now.push type: :break
@@ -102,6 +106,14 @@ module GMD
 		@now.push type: :break
 		@now.push type: :end
 		@now.push type: :do
+	end
+
+	def self.add x, y = 1
+		@now.push type: :add, key: x, val: y
+	end
+
+	def self.mul x, y = 2
+		@now.push type: :mul, key: x, val: y
 	end
 
 	def self.process file, data
