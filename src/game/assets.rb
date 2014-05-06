@@ -1,7 +1,15 @@
 module Assets
 	@cache = Hash.new
 	def self.system path
-		load_bitmap "assets/system/#{path}"
+		load_bitmap "assets/system/#{path}.png"
+	end
+
+	def self.character path
+		load_bitmap "assets/character/#{path}.png"
+	end
+
+	def self.background path
+		load_bitmap "assets/background/#{path}.png"
 	end
 
 	def self.data path

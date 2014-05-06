@@ -1,11 +1,7 @@
 class SceneMain < Scene
-	def background_bitmap
-		Assets.system 'main.jpg'
-	end
-
 	def start
 		super
-		process_message
+		page_listener 0
 	end
 
 	def post_start
@@ -16,6 +12,10 @@ class SceneMain < Scene
 	def pre_terminate
 		@main_window.close
 		super
+	end
+
+	def transition
+		Graphics.transition 20
 	end
 
 	def create_windows
@@ -38,6 +38,13 @@ class SceneMain < Scene
 		@windows.push @menu_window
 	end
 
+	def create_foreground
+		super
+		@foregrounds.push SpriteBase.new
+		@foregrounds.push SpriteBase.new
+		@foregrounds.push SpriteBase.new
+	end
+
 	def back_listener button
 		@main_window.deactivate
 		@menu_window.open
@@ -58,57 +65,12 @@ class SceneMain < Scene
 	def menu_listener button
 		case button
 		when 0
-			Game.save Assets.save_path(0)
-			@menu_window.close
-			@main_window.activate
+			Game.call SceneSave.new(true)
 		when 1
-			Game.load Assets.save_path(0)
-			Game.goto SceneMain.new
+			Game.call SceneSave.new(false)
 		when 2
 			Game.ret
 		end
-	end
-
-	def process_message
-		return true if Message.empty?
-		msg = Message.top
-		case msg[:type]
-		when :text
-			@main_window.next_page "#{msg[:text]}"
-		when :select
-			open_select msg[:choices]
-		when :choice
-			skip_message unless @choice == 0
-			@choice -= 1
-			return false
-		when :do
-			return false
-		when :end
-			return false
-		when :break
-			skip_message 2
-			return false
-		when :fin
-			@main_window.close
-		end
-		true
-	end
-
-	def skip_message indent = 0
-		loop do
-			Message.pop
-			a = Message.top
-			indent += 1 if a[:type] == :do
-			indent -= 1 if a[:type] == :end
-			break if indent == 0
-		end
-	end
-
-	def process_select button
-		@choice = button
-		@select_window.close
-		@main_window.activate
-		page_listener 0
 	end
 
 	def process_ok
@@ -126,4 +88,25 @@ class SceneMain < Scene
 		@select_window.bind_buttons method(:process_select)
 		@select_window.open
 	end
+
+	def center_sprites
+		Graphics.freeze
+		width = 0
+		@foregrounds.each_with_index do |sprite, index|
+			sprite.bitmap = Message.get_sprite index
+			sprite.offset_center
+			width += sprite.width
+		end
+		x = (1024 - width) / 2
+		@foregrounds.each do |sprite|
+			sprite.x = x + sprite.width / 2
+			sprite.y = 400
+			x += sprite.width
+		end
+		@background.bitmap = Message.background
+		Graphics.transition 20
+		Message.refresh
+	end
+
+	include Interpreter
 end

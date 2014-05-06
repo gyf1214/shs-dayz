@@ -18,9 +18,9 @@ class WindowSelection < WindowBase
 	def auto_width
 		width = 0
 		@items.size.times do |i|
-			width = [item_rect(i).width, width].max
+			width = [text_size(@items[i]).width, width].max
 		end
-		self.width = width + MARGIN * 2
+		self.width = width + MARGIN * 4
 		update_padding
 		create_contents
 		refresh
@@ -83,7 +83,7 @@ class WindowSelection < WindowBase
 	end
 
 	def cursor_update
-		if @index < 0
+		if @index < 0 or @index >= @items.size
 			self.cursor_rect.empty
 		else
 			last = self.bottom
@@ -98,8 +98,13 @@ class WindowSelection < WindowBase
 		super
 		if Mouse.over?(self) and Mouse.move?
 			y = Mouse.pos[1] - self.y - MARGIN
-			return if y / WLH < 0 or y / WLH > @items.size - 1
-			@index = y / WLH
+			if y / WLH < 0
+				@index = -1
+			elsif y / WLH > @items.size - 1
+				@index = @items.size
+			else
+				@index = y / WLH
+			end
 			call_listener @index if Mouse.click?(1)
 		end
 	end

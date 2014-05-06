@@ -1,13 +1,16 @@
-scene "prolog" do
+scene :prolog => "main" do
 	character :a => "小小"
 	character :b => "沈笑阳"
 	
+	say "下课的时候，沈笑阳走了过来"
+	b.sprite "0", 0
 	a "你好！"
 	b "你好！"
 	b "你今天周爽考了满分么？"
 	
 	select do
 		choice "考了满分！" do
+			b.sprite "1"
 			b "哦。"
 		end
 		
@@ -25,8 +28,9 @@ scene "prolog" do
 			a "那你考了满分么？"			
 		end
 	end
-	say "（这时候上课铃打了）"
-	say "（我们回到座位上课）"
+	say "这时候上课铃打了"
+	b.sprite "1"
+	say "我们回到座位上课"
 	
-	fin
+	chapter :p1
 end

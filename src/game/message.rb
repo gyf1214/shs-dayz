@@ -1,5 +1,8 @@
 module Message
 	@data = Array.new
+	@sprites = Array.new
+	@background = nil
+	@sprite_changed = false
 
 	def self.push str
 		@data.push str
@@ -26,6 +29,7 @@ module Message
 	end
 
 	def self.clear
+		@sprites.clear
 		@data.clear
 		@index = 0
 	end
@@ -35,6 +39,7 @@ module Message
 	end
 
 	def self.chapter= name
+		@sprite_changed = true
 		@chapter = name
 		clear
 		append Assets.dialogue(name)
@@ -46,5 +51,35 @@ module Message
 
 	def self.index= index
 		@index = index
+	end
+
+	def self.set_sprite index, path
+		@sprite_changed = true
+		if path.nil?
+			@sprites[index] = nil
+		else
+			@sprites[index] = Assets.character path
+		end
+	end
+
+	def self.get_sprite index
+		@sprites[index]
+	end
+
+	def self.background
+		@background
+	end
+
+	def self.background= path
+		@sprite_changed = true
+		@background = Assets.background path
+	end
+
+	def self.refresh?
+		@sprite_changed
+	end
+
+	def self.refresh
+		@sprite_changed = false
 	end
 end

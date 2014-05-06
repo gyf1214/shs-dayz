@@ -23,6 +23,7 @@ class Scene
 
 	def start
 		create_background
+		create_foreground
 		create_windows
 	end
 
@@ -40,7 +41,11 @@ class Scene
 		@windows.each do |window|
 			window.update
 		end
+		@foregrounds.each do |foreground|
+			foreground.update
+		end
 		process_ok if Mouse.click?(1)
+		process_back if Mouse.click?(2)
 		process_ok if Input.trigger? Input::C
 		process_back if Input.trigger? Input::B
 	end
@@ -50,6 +55,7 @@ class Scene
 
 	def terminate
 		dispose_windows
+		dispose_foreground
 		dispose_background
 	end
 
@@ -75,6 +81,16 @@ class Scene
 	def dispose_background
 		@background.bitmap.dispose
 		@background.dispose
+	end
+
+	def create_foreground
+		@foregrounds = Array.new
+	end
+
+	def dispose_foreground
+		@foregrounds.each do |foreground|
+			foreground.dispose unless foreground.disposed?
+		end
 	end
 
 	def process_ok

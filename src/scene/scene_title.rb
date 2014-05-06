@@ -4,7 +4,7 @@ class SceneTitle < Scene
 	end
 
 	def background_bitmap
-		Assets.system 'title.bmp'
+		Assets.system 'title'
 	end
 
 	def post_start
@@ -38,8 +38,7 @@ class SceneTitle < Scene
 			Message.chapter = 'prolog'
 			Game.call SceneMain.new
 		when 1
-			Game.load Assets.save_path(0)
-			Game.call SceneMain.new
+			Game.call SceneSave.new(false)
 		when 2
 			Game.ret
 		end

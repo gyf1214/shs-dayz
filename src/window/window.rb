@@ -6,7 +6,7 @@ class WindowBase < Window
 	def initialize x, y, width, height
 		super
 		@listener = Hash.new
-		self.windowskin = Assets.system "window.png"
+		self.windowskin = Assets.system "window"
 		update_padding
 		create_contents
 		self.openness = 0
@@ -84,6 +84,7 @@ class WindowBase < Window
 
 	def mouse_update
 		call_listener :ok if Mouse.click?(1) && Mouse.over?(self)
+		call_listener :back if Mouse.click?(2) && Mouse.over?(self)
 	end
 
 	def bind button, listener

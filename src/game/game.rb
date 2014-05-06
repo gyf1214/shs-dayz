@@ -1,7 +1,10 @@
 module Game
+	SAVES = 'save/..zzy'
+
 	@scene = nil
 	@stack = []
 	@closing = false
+	@sprite = ""
 
 	def self.run scene
 		call scene
@@ -18,6 +21,10 @@ module Game
 		@scene == scene
 	end
 
+	def self.scene_type? scene
+		@scene.instance_of? scene
+	end
+
 	def self.call scene
 		@scene = scene
 		@stack.push @scene
@@ -28,10 +35,37 @@ module Game
 		@scene = @stack.last
 	end
 
+	def self.fetch_saves
+		path = SAVES
+		if File.exist? path
+			ret = load_data path
+		else
+			ret = []
+			save_data ret, path
+		end
+		ret
+	end
+
+	def self.refresh_saves data
+		path = SAVES
+		save_data data, path
+	end
+
+	def self.get_savepath index
+		ret = ""
+		index += 1
+		while index > 0
+			ret += if index % 2 == 0 then '.' else '-' end
+			index /= 2
+		end
+		"save/#{ret}.zzy"
+	end
+
 	def self.save path
 		data = Hash.new
 		data[:chapter] = Message.chapter
 		data[:index] = Message.index
+		data[:sprite] = Message.sprites
 		save_data data, path
 	end
 
@@ -39,5 +73,6 @@ module Game
 		data = load_data path
 		Message.chapter = data[:chapter]
 		Message.index = data[:index]
+		Message.sprites = data[:sprite]
 	end
 end
