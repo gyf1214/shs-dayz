@@ -1,4 +1,4 @@
-scene :prolog => "main" do
+scene :prolog => "学院_廊下D" do
 	character :a => "小小"
 	character :b => "沈笑阳"
 	

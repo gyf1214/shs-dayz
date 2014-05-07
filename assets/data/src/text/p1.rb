@@ -1,4 +1,4 @@
-scene :p1 => "main" do
+scene :p1 => "学院_教室E" do
 	character :a => "小小"
 	character :b => "沈笑阳"
 	character :c => "胡亦乾"

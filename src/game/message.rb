@@ -58,21 +58,41 @@ module Message
 		if path.nil?
 			@sprites[index] = nil
 		else
-			@sprites[index] = Assets.character path
+			@sprites[index] = path
 		end
 	end
 
 	def self.get_sprite index
-		@sprites[index]
+		if @sprites[index].nil?
+			nil
+		else
+			Assets.character @sprites[index]
+		end
+	end
+
+	def self.sprites
+		@sprites
+	end
+
+	def self.sprites= s
+		@sprites = s
 	end
 
 	def self.background
+		if @background.nil?
+			nil
+		else
+			Assets.background @background
+		end
+	end
+
+	def self.background_path
 		@background
 	end
 
 	def self.background= path
 		@sprite_changed = true
-		@background = Assets.background path
+		@background = path
 	end
 
 	def self.refresh?
@@ -81,5 +101,9 @@ module Message
 
 	def self.refresh
 		@sprite_changed = false
+	end
+
+	def self.reset
+		@sprite_changed = true
 	end
 end

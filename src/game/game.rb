@@ -66,6 +66,8 @@ module Game
 		data[:chapter] = Message.chapter
 		data[:index] = Message.index
 		data[:sprite] = Message.sprites
+		data[:background] = Message.background_path
+		data[:snap] = Utility.dump_bitmap @scene.snap
 		save_data data, path
 	end
 
@@ -74,5 +76,6 @@ module Game
 		Message.chapter = data[:chapter]
 		Message.index = data[:index]
 		Message.sprites = data[:sprite]
+		Message.background = data[:background]
 	end
 end

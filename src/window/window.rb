@@ -112,4 +112,8 @@ class WindowBase < Window
 		height = WLH
 		Rect.new 0, 0, width, height
 	end
+
+	def draw_text text, align = 0
+		contents.draw_text 0, 0, contents.width, contents.height, text, align
+	end
 end

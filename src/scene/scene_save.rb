@@ -1,18 +1,21 @@
 class SceneSave < Scene
+	attr_reader :snap
+
 	def initialize save
 		super()
 		@save = save
 		@saves = Game.fetch_saves
+		@snap = Utility.snapshot
+	end
+
+	def terminate
+		@snap.dispose
+		super
 	end
 
 	def create_windows
 		super
-		commands = Array.new
-		@saves.each do |save|
-			commands.push "#{save[:chapter]}: #{save[:time]}"
-		end
-		commands.push "New Data" if @save
-		@main_window = WindowSelection.new (1024 - 800) / 2, (640 - 600) / 2, 800, 600, commands
+		@main_window = WindowSaveload.new
 		if @save
 			@main_window.bind_buttons method(:process_save)
 		else
@@ -32,10 +35,10 @@ class SceneSave < Scene
 	end
 
 	def process_save button
-		if button == @saves.size
+		if @saves[button].nil?
 			data = Hash.new
 			data[:path] = Game.get_savepath button
-			@saves.push data
+			@saves[button] = data
 		else
 			data = @saves[button]
 		end
@@ -47,6 +50,7 @@ class SceneSave < Scene
 	end
 
 	def process_load button
+		return if @saves[button].nil?
 		Game.load @saves[button][:path]
 		Game.ret
 		Game.call SceneMain.new unless Game.scene_type? SceneMain

@@ -1,7 +1,10 @@
 class SceneMain < Scene
 	def start
 		super
-		page_listener 0
+		loop do
+			break if process_message
+			Message.pop
+		end
 	end
 
 	def post_start
@@ -65,8 +68,10 @@ class SceneMain < Scene
 	def menu_listener button
 		case button
 		when 0
+			Message.reset
 			Game.call SceneSave.new(true)
 		when 1
+			Message.reset
 			Game.call SceneSave.new(false)
 		when 2
 			Game.ret

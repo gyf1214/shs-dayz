@@ -5,7 +5,7 @@ module Interpreter
 		msg = Message.top
 		case msg[:type]
 		when :text
-			@main_window.next_page "#{msg[:text]}"
+			@main_window.next_page msg
 		when :select
 			open_select msg[:choices]
 		when :choice

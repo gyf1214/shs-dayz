@@ -2,12 +2,12 @@ class SpriteBase < Sprite
 	FADE = 24
 
 	def width
-		return @bitmap_trans.width unless @bitmap_trans.nil?
+		return 0 if bitmap.nil?
 		super
 	end
 
 	def height
-		return @bitmap_trans.height unless @bitmap_trans.nil?
+		return 0 if bitmap.nil?
 		super
 	end
 

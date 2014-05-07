@@ -6,7 +6,7 @@ module GMD
 		end
 
 		def say x
-			GMD.say "#{@display}：#{x}"
+			GMD.say x, @display
 		end
 
 		def sprite x, loc = @loc
@@ -37,8 +37,8 @@ module GMD
 	def self.scene c
 		@characters = Hash.new
 		@now = Array.new
-		@now.push type: :blank
 		name = ""
+		@now.push type: :blank
 		if c.instance_of? Hash
 			c.each do |k, v|
 				name = k.to_s
@@ -51,8 +51,8 @@ module GMD
 		@data.store name, @now
 	end
 
-	def self.say x
-		@now.push type: :text, text: x
+	def self.say x, c = nil
+		@now.push type: :text, text: x, character: c
 	end
 
 	def self.select

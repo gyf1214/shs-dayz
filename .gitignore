@@ -8,3 +8,6 @@ Game.exe
 
 #sublime
 *.sublime*
+
+#picture
+*.png
