@@ -63,10 +63,15 @@ class WindowSaveload < WindowSelection
 	def mouse_update
 		call_listener :ok if Mouse.click?(1) && Mouse.over?(self)
 		call_listener :back if Mouse.click?(2) && Mouse.over?(self)
-		if Mouse.over?(self) and Mouse.move?
-			x = Mouse.pos[0] - self.x - MARGIN
-			y = Mouse.pos[1] - self.y - MARGIN
-			@index = y / RHEIGHT * 2 + x / RWIDTH
+		if Mouse.move?
+			if Mouse.over?(self)
+				x = Mouse.pos[0] - self.x - MARGIN
+				y = Mouse.pos[1] - self.y - MARGIN
+				x = [0, x].max
+				@index = y / RHEIGHT * 2 + [1, x / RWIDTH].min
+			else
+				@index = -1
+			end
 		end
 	end
 

@@ -7,6 +7,7 @@ class WindowMenu < WindowSelection
 		super xx, 576, 400, 24, items
 		self.windowskin = Assets.system "WindowNaked"
 		@index = -1
+		bind_back method(:process_back)
 		refresh
 	end
 
@@ -40,5 +41,9 @@ class WindowMenu < WindowSelection
 				@index = -1
 			end
 		end
+	end
+
+	def process_back button
+		@index = -1
 	end
 end

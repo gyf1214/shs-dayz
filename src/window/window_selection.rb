@@ -153,4 +153,9 @@ class WindowSelection < WindowBase
 	def process_ok button
 		call_listener @index
 	end
+
+	def open
+		super
+		refresh
+	end
 end

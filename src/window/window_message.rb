@@ -1,10 +1,11 @@
 class WindowMessage < WindowBase
 	def initialize
 		super 112, 450, 800, 160
-		@showing = false
-		bind_ok method(:process_ok)
 		@window_name = WindowBase.new 112, 394, 150, 56
 		@window_menu = WindowMenu.new
+		@showing = false
+		@duration = 0
+		bind_ok method(:process_ok)
 		@window_menu.bind_buttons method(:process_menu)
 	end
 
@@ -22,6 +23,7 @@ class WindowMessage < WindowBase
 	end
 
 	def next_page msg
+		self.pause = false
 		@text = msg[:text].clone
 		@character = msg[:character]
 		return if @text.nil?
@@ -39,8 +41,10 @@ class WindowMessage < WindowBase
 	end
 
 	def next_character
+		@duration = 0
 		if @text.empty?
 			@showing = false
+			self.pause = true
 		else
 			c = @text.slice! 0
 			draw_character c
@@ -49,7 +53,11 @@ class WindowMessage < WindowBase
 
 	def update
 		super
-		next_character if @showing and active?
+		if @showing and active? and @duration > 2
+			next_character
+		else
+			@duration += 1
+		end
 		@window_name.update
 		@window_menu.update
 	end
@@ -88,11 +96,25 @@ class WindowMessage < WindowBase
 		super unless Mouse.over? @window_menu
 	end
 
+	def key_update
+		super if @window_menu.index < 0
+	end
+
 	def process_menu button
 		@listener[:menu].call button if listen? :menu
 	end
 
 	def bind_menu listener
 		bind :menu, listener
+	end
+
+	def deactivate
+		super
+		@window_menu.deactivate unless @window_menu.nil?
+	end
+
+	def activate
+		super
+		@window_menu.activate unless @window_menu.nil?
 	end
 end
