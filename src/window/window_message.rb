@@ -4,6 +4,8 @@ class WindowMessage < WindowBase
 		@showing = false
 		bind_ok method(:process_ok)
 		@window_name = WindowBase.new 112, 394, 150, 56
+		@window_menu = WindowMenu.new
+		@window_menu.bind_buttons method(:process_menu)
 	end
 
 	def draw_character c
@@ -49,6 +51,7 @@ class WindowMessage < WindowBase
 		super
 		next_character if @showing and active?
 		@window_name.update
+		@window_menu.update
 	end
 
 	def process_ok button
@@ -65,16 +68,31 @@ class WindowMessage < WindowBase
 
 	def dispose
 		@window_name.dispose
+		@window_menu.dispose
 		super
 	end
 
 	def close
 		super
 		@window_name.close
+		@window_menu.close
 	end
 
 	def open
 		super
 		@window_name.open unless @character.nil?
+		@window_menu.open
+	end
+
+	def mouse_update
+		super unless Mouse.over? @window_menu
+	end
+
+	def process_menu button
+		@listener[:menu].call button if listen? :menu
+	end
+
+	def bind_menu listener
+		bind :menu, listener
 	end
 end

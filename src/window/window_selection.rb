@@ -105,7 +105,6 @@ class WindowSelection < WindowBase
 			else
 				@index = y / WLH
 			end
-			call_listener @index if Mouse.click?(1)
 		end
 	end
 

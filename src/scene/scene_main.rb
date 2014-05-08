@@ -26,19 +26,11 @@ class SceneMain < Scene
 		@main_window = WindowMessage.new
 		@main_window.bind_back method(:back_listener)
 		@main_window.bind_page method(:page_listener)
+		@main_window.bind_menu method(:menu_listener)
 		@windows.push @main_window
 
 		@select_window = WindowSelection.new (1024 - 400) / 2, 0, 400, 80, Array.new
 		@windows.push @select_window
-
-		commands = ["Save", "Load", "Exit"]
-		@menu_window = WindowSelection.new 0, 0, 100, 100, commands
-		@menu_window.auto_height
-		@menu_window.auto_width
-		@menu_window.center
-		@menu_window.bind_back method(:back_menu)
-		@menu_window.bind_buttons method(:menu_listener)
-		@windows.push @menu_window
 	end
 
 	def create_foreground
@@ -49,8 +41,7 @@ class SceneMain < Scene
 	end
 
 	def back_listener button
-		@main_window.deactivate
-		@menu_window.open
+		Game.ret
 	end
 
 	def page_listener button
@@ -60,21 +51,14 @@ class SceneMain < Scene
 		end
 	end
 
-	def back_menu button
-		@menu_window.close
-		@main_window.activate
-	end
-
 	def menu_listener button
 		case button
-		when 0
-			Message.reset
-			Game.call SceneSave.new(true)
 		when 1
 			Message.reset
-			Game.call SceneSave.new(false)
+			Game.call SceneSave.new(true)
 		when 2
-			Game.ret
+			Message.reset
+			Game.call SceneSave.new(false)
 		end
 	end
 

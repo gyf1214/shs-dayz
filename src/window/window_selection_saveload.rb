@@ -68,7 +68,6 @@ class WindowSaveload < WindowSelection
 			y = Mouse.pos[1] - self.y - MARGIN
 			@index = y / RHEIGHT * 2 + x / RWIDTH
 		end
-		call_listener @index if Mouse.click?(1)
 	end
 
 	def bind_buttons listener
