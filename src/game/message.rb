@@ -29,6 +29,7 @@ module Message
 	end
 
 	def self.clear
+		@background = nil
 		@sprites.clear
 		@data.clear
 		@index = 0

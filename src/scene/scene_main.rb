@@ -47,7 +47,12 @@ class SceneMain < Scene
 	end
 
 	def back_listener button
-		Game.ret
+		if @skipping
+			@skipping = false
+			@main_window.menu.hide_cursor 3
+		else
+			Game.ret
+		end
 	end
 
 	def page_listener button

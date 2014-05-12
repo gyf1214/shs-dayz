@@ -79,7 +79,12 @@ class WindowSelection < WindowBase
 	end
 
 	def move direction
-		@index = (@index + direction) % @items.size unless @items.empty?
+		return if @items.empty?
+		if @index == -1
+			@index = (@index + (direction + 1) / 2) % @items.size
+		else
+			@index = (@index + direction) % @items.size
+		end
 	end
 
 	def cursor_update
