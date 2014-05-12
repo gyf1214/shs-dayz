@@ -3,9 +3,10 @@ class WindowMenu < WindowSelection
 
 	def initialize
 		items = ["Auto", "Save", "Load", "Skip"]
-		xx = 900 - items.size * RWIDTH
-		super xx, 576, 400, 24, items
-		self.windowskin = Assets.system "WindowNaked"
+		x = 900 - items.size * RWIDTH
+		@helpers = Array.new
+		super x, 576, 400, 24, items
+		self.windowskin = Assets.system "window_naked"
 		@index = -1
 		bind_back method(:process_back)
 		refresh
@@ -43,7 +44,46 @@ class WindowMenu < WindowSelection
 		end
 	end
 
+	def update
+		super
+		@helpers.each do |helper|
+			helper.update
+		end
+	end
+
 	def process_back button
 		@index = -1
+	end
+
+	def draw_item index, enable = true
+		super
+		@helpers[index].dispose unless @helpers[index].nil?
+		rect = item_rect index
+		rect.x += self.x
+		rect.y += self.y
+		@helpers[index] = WindowHelper.new rect
+	end
+
+	def show_cursor index
+		@helpers[index].show
+	end
+
+	def hide_cursor index
+		@helpers[index].hide
+	end
+
+	def cursor? index
+		@helpers[index].show?
+	end
+
+	def toggle_cursor index
+		@helpers[index].toggle
+	end
+
+	def dispose
+		super
+		@helpers.each do |helper|
+			helper.dispose
+		end
 	end
 end

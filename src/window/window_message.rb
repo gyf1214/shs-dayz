@@ -117,4 +117,8 @@ class WindowMessage < WindowBase
 		super
 		@window_menu.activate unless @window_menu.nil?
 	end
+
+	def menu
+		@window_menu
+	end
 end

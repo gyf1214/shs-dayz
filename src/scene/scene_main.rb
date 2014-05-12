@@ -1,4 +1,10 @@
 class SceneMain < Scene
+	DURE = 5
+
+	def initialize
+		@skipping = false
+	end
+
 	def start
 		super
 		loop do
@@ -53,13 +59,23 @@ class SceneMain < Scene
 
 	def menu_listener button
 		case button
+		when 0
+			@main_window.menu.hide_cursor 3
+			@main_window.menu.toggle_cursor button
 		when 1
 			Message.reset
 			Game.call SceneSave.new(true)
 		when 2
 			Message.reset
 			Game.call SceneSave.new(false)
+		when 3
+			@main_window.menu.hide_cursor 0
+			@main_window.menu.toggle_cursor button
+			@skipping = @main_window.menu.cursor? button
+			@duration = DURE
+			page_listener 0
 		end
+		@main_window.menu.index = -1
 	end
 
 	def process_ok
@@ -68,6 +84,8 @@ class SceneMain < Scene
 	end
 
 	def open_select choices
+		@skipping = false
+		@main_window.menu.hide_cursor 3
 		@main_window.deactivate
 		@select_window.items = choices
 		@select_window.index = 0
@@ -95,6 +113,15 @@ class SceneMain < Scene
 		@background.bitmap = Message.background
 		Graphics.transition 20
 		Message.refresh
+	end
+
+	def update
+		super
+		@duration -= 1 if @skipping
+		if @skipping and @duration == 0
+			@duration = DURE
+			@main_window.process_ok :ok
+		end
 	end
 
 	include Interpreter

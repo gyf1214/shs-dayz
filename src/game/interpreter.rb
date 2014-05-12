@@ -8,6 +8,7 @@ module Interpreter
 			@main_window.next_page msg
 		when :select
 			open_select msg[:choices]
+			return true
 		when :choice
 			skip_message unless @choice == 0
 			@choice -= 1
@@ -33,7 +34,7 @@ module Interpreter
 		when :blank
 			return false
 		end
-		true
+		return true
 	end
 
 	def skip_message indent = 0
