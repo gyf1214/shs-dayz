@@ -27,7 +27,9 @@ module Interpreter
 			Message.set_sprite msg[:location], msg[:sprite]
 			return false
 		when :background
+			Flag.backgrounds.push msg[:path] unless Flag.backgrounds.member? msg[:path]
 			Message.background = msg[:path]
+			Flag.dump
 			return false
 		when :fin
 			@main_window.close

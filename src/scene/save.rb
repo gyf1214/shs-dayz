@@ -1,3 +1,5 @@
+require 'src/scene/base'
+
 class SceneSave < Scene
 	attr_reader :snap
 

@@ -1,3 +1,5 @@
+require 'src/scene/base'
+
 class SceneTitle < Scene
 	def transition
 		Graphics.transition 20
@@ -19,8 +21,8 @@ class SceneTitle < Scene
 
 	def create_windows
 		super
-		commands = ["New Game", "Load Game", "Exit"]
-		window = WindowSelection.new (1024 - 200) / 2, 500, 200, 104, commands
+		commands = ["New Game", "Load Game", "Other", "Exit"]
+		window = WindowSelection.new (1024 - 200) / 2, 480, 200, 128, commands
 		window.bind_all method(:main_listener)
 		@windows.push window
 
@@ -40,6 +42,9 @@ class SceneTitle < Scene
 		when 1
 			Game.call SceneSave.new(false)
 		when 2
+			@windows[1].open
+			@windows[0].deactivate
+		when 3
 			Game.ret
 		end
 	end

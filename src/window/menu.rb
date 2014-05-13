@@ -1,3 +1,5 @@
+require 'src/window/selection'
+
 class WindowMenu < WindowSelection
 	RWIDTH = 75
 
@@ -84,6 +86,13 @@ class WindowMenu < WindowSelection
 		super
 		@helpers.each do |helper|
 			helper.dispose
+		end
+	end
+
+	def close
+		super
+		@helpers.each do |helper|
+			helper.hide
 		end
 	end
 end

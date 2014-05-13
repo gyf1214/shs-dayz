@@ -1,8 +1,11 @@
+require 'src/scene/base'
+
 class SceneMain < Scene
 	DURE = 5
 
 	def initialize
-		@skipping = false
+		super
+		@skipping = 0
 	end
 
 	def start
@@ -47,8 +50,8 @@ class SceneMain < Scene
 	end
 
 	def back_listener button
-		if @skipping
-			@skipping = false
+		unless @skipping == 0
+			@skipping = 0
 			@main_window.menu.hide_cursor 3
 		else
 			Game.ret
@@ -67,6 +70,12 @@ class SceneMain < Scene
 		when 0
 			@main_window.menu.hide_cursor 3
 			@main_window.menu.toggle_cursor button
+			if @main_window.menu.cursor? button
+				@skipping = 2
+			else
+				@skipping = 0
+			end
+			@duration = DURE
 		when 1
 			Message.reset
 			Game.call SceneSave.new(true)
@@ -76,9 +85,13 @@ class SceneMain < Scene
 		when 3
 			@main_window.menu.hide_cursor 0
 			@main_window.menu.toggle_cursor button
-			@skipping = @main_window.menu.cursor? button
+			if @main_window.menu.cursor? button
+				@skipping = 1
+			else
+				@skipping = 0
+			end
 			@duration = DURE
-			page_listener 0
+			@main_window.process_ok :ok
 		end
 		@main_window.menu.index = -1
 	end
@@ -89,8 +102,9 @@ class SceneMain < Scene
 	end
 
 	def open_select choices
-		@skipping = false
+		@skipping = 0
 		@main_window.menu.hide_cursor 3
+		@main_window.menu.hide_cursor 0
 		@main_window.deactivate
 		@select_window.items = choices
 		@select_window.index = 0
@@ -122,10 +136,14 @@ class SceneMain < Scene
 
 	def update
 		super
-		@duration -= 1 if @skipping
-		if @skipping and @duration == 0
+		@duration -= 1 unless @skipping == 0
+		if @skipping != 0 and @duration == 0
 			@duration = DURE
 			@main_window.process_ok :ok
+			msg = Message.top
+			if @skipping == 2 and !msg.nil? and msg[:type] == :text
+				@duration = @duration * [msg[:text].size, 8].max
+			end
 		end
 	end
 

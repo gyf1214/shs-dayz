@@ -1,3 +1,5 @@
+require 'src/window/base'
+
 class WindowSelection < WindowBase
 	attr_reader :items
 	attr_reader :index

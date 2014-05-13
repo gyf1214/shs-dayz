@@ -1,3 +1,5 @@
+require 'src/window/base'
+
 class WindowMessage < WindowBase
 	def initialize
 		super 112, 450, 800, 160
