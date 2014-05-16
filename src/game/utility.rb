@@ -2,12 +2,17 @@ module Utility
 	SNAP_WIDTH = 128
 	SNAP_HEIGHT = 80
 
-	def self.snapshot
-		src = Graphics.snap_to_bitmap
+	def self.thumbnail src, width = SNAP_WIDTH, height = SNAP_HEIGHT
 		ret = Bitmap.new SNAP_WIDTH, SNAP_HEIGHT
 		src_rec = Rect.new 0, 0, src.width, src.height
 		dest_rec = Rect.new 0, 0, SNAP_WIDTH, SNAP_HEIGHT
 		ret.stretch_blt dest_rec, src, src_rec
+		ret
+	end
+
+	def self.snapshot
+		src = Graphics.snap_to_bitmap
+		ret = thumbnail src
 		src.dispose
 		ret
 	end

@@ -19,10 +19,7 @@ class WindowSaveload < WindowMulti
 
 	def initialize
 		items = Game.fetch_saves
-		width = cols * rwidth + MARGIN * 2
-		height = rows * rheight + MARGIN * 2
-		super (1024 - width) / 2, (640 - height) / 2, width, height, items
-		@index = 0
+		super items
 	end
 
 	def draw_item index

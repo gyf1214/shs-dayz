@@ -26,7 +26,7 @@ class SceneTitle < Scene
 		window.bind_all method(:main_listener)
 		@windows.push window
 
-		commands = ["Back"]
+		commands = ["CG Gallery", "Back"]
 		window = WindowSelection.new (1024 - 500) / 2, 200, 500, 250, commands
 		window.bind_all method(:another_listener)
 		@windows.push window
@@ -50,7 +50,15 @@ class SceneTitle < Scene
 	end
 
 	def another_listener button
-		@windows[1].close
-		@windows[0].activate
+		case button
+		when :back
+			@windows[1].close
+			@windows[0].activate
+		when 0
+			Game.call SceneGallery.new
+		when 1
+			@windows[1].close
+			@windows[0].activate
+		end
 	end
 end

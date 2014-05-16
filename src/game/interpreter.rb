@@ -28,8 +28,8 @@ module Interpreter
 			return false
 		when :background
 			Flag.backgrounds.push msg[:path] unless Flag.backgrounds.member? msg[:path]
-			Message.background = msg[:path]
 			Flag.dump
+			Message.background = msg[:path]
 			return false
 		when :fin
 			@main_window.close

@@ -13,6 +13,13 @@ class WindowMulti < WindowSelection
 	def rheight
 	end
 
+	def initialize items
+		width = cols * rwidth + MARGIN * 2
+		height = rows * rheight + MARGIN * 2
+		super (1024 - width) / 2, (640 - height) / 2, width, height, items
+		@index = -1
+	end
+
 	def contents_height
 		height - MARGIN * 2
 	end
@@ -60,7 +67,7 @@ class WindowMulti < WindowSelection
 				x = Mouse.pos[0] - self.x - MARGIN
 				y = Mouse.pos[1] - self.y - MARGIN
 				x = [0, x].max
-				@index = y / rheight * cols + [1, x / rwidth].min
+				@index = y / rheight * cols + [cols - 1, x / rwidth].min
 			else
 				@index = -1
 			end

@@ -8,17 +8,13 @@ class SceneMain < Scene
 		@skipping = 0
 	end
 
-	def start
+	def post_start
 		super
+		@main_window.open
 		loop do
 			break if process_message
 			Message.pop
 		end
-	end
-
-	def post_start
-		super
-		@main_window.open
 	end
 
 	def pre_terminate
