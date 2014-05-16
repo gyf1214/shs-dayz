@@ -1,4 +1,4 @@
-require 'src/scene/base'
+demand 'src/scene/base.rb'
 
 class SceneSave < Scene
 	attr_reader :snap

@@ -10,7 +10,8 @@ files = ARGV[2..-1]
 
 case key
 when 'script'
-	dump = dump_script load_script(files)
+	list = Dependency.process files
+	dump = dump_script load_script(list)
 when 'text'
 	dump = load_text files
 end

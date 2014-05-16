@@ -1,4 +1,4 @@
-require 'src/window/selection'
+demand 'src/window/selection.rb'
 
 class WindowMenu < WindowSelection
 	RWIDTH = 75

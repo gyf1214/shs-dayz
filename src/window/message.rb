@@ -1,4 +1,4 @@
-require 'src/window/base'
+demand 'src/window/base.rb'
 
 class WindowMessage < WindowBase
 	def initialize

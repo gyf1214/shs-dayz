@@ -6,4 +6,6 @@ def main
 	Graphics.transition 30
 end
 
-main
+rgss_main do
+	main
+end

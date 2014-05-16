@@ -1,4 +1,4 @@
-require 'src/window/multi'
+demand 'src/window/multi.rb'
 
 class WindowSaveload < WindowMulti
 	def rows

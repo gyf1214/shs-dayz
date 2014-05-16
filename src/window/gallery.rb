@@ -1,6 +1,6 @@
-require 'src/window/selection'
+demand 'src/window/multi.rb'
 
-class WindowGallery < WindowSelection
+class WindowGallery < WindowMulti
 	def initialize
 		super 
 	end

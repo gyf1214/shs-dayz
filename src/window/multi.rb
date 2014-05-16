@@ -1,4 +1,4 @@
-require 'src/window/selection'
+demand 'src/window/selection.rb'
 
 class WindowMulti < WindowSelection
 	def rows

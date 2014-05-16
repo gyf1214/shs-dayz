@@ -1,0 +1,2 @@
+def demand *args
+end
