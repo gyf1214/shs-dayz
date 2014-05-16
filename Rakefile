@@ -15,10 +15,7 @@ task :script do
 	puts "Source Files:"
 	puts files
 	puts "Output File: #{output}"
-	puts
 	ruby "bin/dump.rb script #{output} #{files.join(' ')}"
-	puts
-	puts "Done."
 end
 
 task :text do
@@ -29,10 +26,7 @@ task :text do
 	puts "Source Files:"
 	puts files
 	puts "Output File: #{output}"
-	puts
 	ruby "bin/dump.rb text #{output} #{files.join(' ')}"
-	puts
-	puts "Done."
 end
 
 task :run do

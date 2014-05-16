@@ -14,7 +14,6 @@ module Dependency
 				instance_eval line if line =~ /^demand/
 			end
 			@done.push file
-			puts file
 		end
 	end
 
