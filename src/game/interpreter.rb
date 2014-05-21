@@ -35,6 +35,9 @@ module Interpreter
 			@main_window.close
 		when :blank
 			return false
+		when :flag
+			Flag[msg[:key]] = msg[:val]
+			return false
 		end
 		return true
 	end

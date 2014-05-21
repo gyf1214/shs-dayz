@@ -11,3 +11,6 @@ Game.exe
 
 #picture
 *.png
+
+#assets
+assets/

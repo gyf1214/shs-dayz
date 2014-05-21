@@ -84,6 +84,25 @@ module GMD
 		@now.push type: :chapter, chapter: x.to_s
 	end
 
+	def self.flag x, y = true
+		@now.push type: :flag, key: x, val: y
+	end
+
+	def self.since x
+		@now.push type: :since, key: x
+		@now.push type: :do
+		yield
+		@now.push type: :break
+		@now.push type: :end
+		@now.push type: :end
+	end
+
+	def self.otherwise
+		@now.push type: :break
+		@now.push type: :end
+		@now.push type: :do
+	end
+
 	def self.process file, data
 		@data = data
 		instance_eval file
