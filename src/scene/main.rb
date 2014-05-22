@@ -64,13 +64,10 @@ class SceneMain < Scene
 	def menu_listener button
 		case button
 		when 0
-			@main_window.menu.hide_cursor 3
-			@main_window.menu.toggle_cursor button
-			if @main_window.menu.cursor? button
-				@skipping = 2
-			else
-				@skipping = 0
-			end
+			flag = @skipping
+			recover
+			auto unless flag == 2
+
 			@duration = DURE
 		when 1
 			Message.reset
@@ -79,13 +76,10 @@ class SceneMain < Scene
 			Message.reset
 			Game.call SceneSave.new(false)
 		when 3
-			@main_window.menu.hide_cursor 0
-			@main_window.menu.toggle_cursor button
-			if @main_window.menu.cursor? button
-				@skipping = 1
-			else
-				@skipping = 0
-			end
+			flag = @skipping
+			recover
+			skip unless flag == 1
+
 			@duration = DURE
 			@main_window.process_ok :ok
 		end
@@ -98,9 +92,8 @@ class SceneMain < Scene
 	end
 
 	def open_select choices
-		@skipping = 0
-		@main_window.menu.hide_cursor 3
-		@main_window.menu.hide_cursor 0
+		recover
+
 		@main_window.deactivate
 		@select_window.items = choices
 		@select_window.index = 0
@@ -141,6 +134,22 @@ class SceneMain < Scene
 				@duration = @duration * [msg[:text].size, 8].max
 			end
 		end
+	end
+
+	def skip
+		@skipping = 1
+		@main_window.menu.show_cursor 3
+	end
+
+	def auto
+		@skipping = 2
+		@main_window.menu.show_cursor 0
+	end
+
+	def recover
+		@skipping = 0
+		@main_window.menu.hide_cursor 0
+		@main_window.menu.hide_cursor 3
 	end
 
 	include Interpreter

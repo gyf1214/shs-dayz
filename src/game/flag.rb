@@ -4,6 +4,7 @@ module Flag
 	@backgrounds = Array.new
 	@global = Hash.new
 	@flags = Hash.new
+	@read = Hash.new
 
 	def self.backgrounds
 		@backgrounds
@@ -18,6 +19,7 @@ module Flag
 		ret = Hash.new
 		ret[:backgrounds] = @backgrounds
 		ret[:global] = @global
+		ret[:read] = @read
 		save_data ret, path
 		ret
 	end
@@ -28,6 +30,7 @@ module Flag
 		ret = load_data path if File.exist? path
 		@backgrounds = ret[:backgrounds] unless ret[:backgrounds].nil?
 		@global = ret[:global] unless ret[:global].nil?
+		@read = ret[:read] unless ret[:read].nil?
 	end
 
 	def self.[] key
@@ -48,5 +51,15 @@ module Flag
 
 	def self.flags= val
 		@flags = val
+	end
+
+	def self.read chapter, index
+		@read[chapter] = Array.new unless @read.key? chapter
+		@read[chapter][index] = true
+	end
+
+	def self.read? chapter, index
+		return false unless @read.key? chapter
+		@read[chapter][index]
 	end
 end

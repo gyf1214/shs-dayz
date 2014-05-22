@@ -6,6 +6,9 @@ module Interpreter
 		case msg[:type]
 		when :text
 			@main_window.next_page msg
+			recover if @skipping == 1 and !Flag.read?(Message.chapter, Message.index) and !Flag.global[:unread]
+			Flag.read Message.chapter, Message.index
+			Flag.dump
 		when :select
 			open_select msg[:choices]
 			return true
@@ -37,6 +40,9 @@ module Interpreter
 			return false
 		when :flag
 			Flag[msg[:key]] = msg[:val]
+			return false
+		when :since
+			skip_message unless Flag[msg[:key]]
 			return false
 		end
 		return true

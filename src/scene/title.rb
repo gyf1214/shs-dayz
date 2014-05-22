@@ -26,7 +26,7 @@ class SceneTitle < Scene
 		window.bind_all method(:main_listener)
 		@windows.push window
 
-		commands = ["CG Gallery", "Back"]
+		commands = ["CG Gallery", "Config", "Back"]
 		window = WindowSelection.new (1024 - 500) / 2, 200, 500, 250, commands
 		window.bind_all method(:another_listener)
 		@windows.push window
@@ -37,6 +37,7 @@ class SceneTitle < Scene
 		when :back
 			Game.ret
 		when 0
+			Flag.flags.clear
 			Message.chapter = 'prolog'
 			Game.call SceneMain.new
 		when 1
@@ -57,6 +58,8 @@ class SceneTitle < Scene
 		when 0
 			Game.call SceneGallery.new
 		when 1
+			Game.call SceneConfig.new
+		when 2
 			@windows[1].close
 			@windows[0].activate
 		end
