@@ -37,6 +37,7 @@ module GMD
 	def self.scene c
 		@characters = Hash.new
 		@now = Array.new
+		@label = Hash.new
 		name = ""
 		@now.push type: :blank
 		if c.instance_of? Hash
@@ -48,7 +49,7 @@ module GMD
 			name = c
 		end
 		yield
-		@data.store name, @now
+		@data.store name, text: @now, label: @label
 	end
 
 	def self.say x, c = nil
@@ -106,6 +107,14 @@ module GMD
 	def self.process file, data
 		@data = data
 		instance_eval file
+	end
+
+	def self.label k
+		@label.store k, @now.size - 1
+	end
+
+	def self.goto k
+		@now.push type: :goto, key: k
 	end
 
 	private

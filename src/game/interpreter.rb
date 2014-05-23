@@ -44,6 +44,9 @@ module Interpreter
 		when :since
 			skip_message unless Flag[msg[:key]]
 			return false
+		when :goto
+			Message.goto msg[:key]
+			return false
 		end
 		return true
 	end

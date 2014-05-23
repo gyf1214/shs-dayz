@@ -3,6 +3,7 @@ module Message
 	@sprites = Array.new
 	@background = nil
 	@sprite_changed = false
+	@labels = Hash.new
 
 	def self.push str
 		@data.push str
@@ -43,7 +44,8 @@ module Message
 		@sprite_changed = true
 		@chapter = name
 		clear
-		append Assets.dialogue(name)
+		append Assets.dialogue(name)[:text]
+		@labels = Assets.dialogue(name)[:label]
 	end
 
 	def self.index
@@ -106,5 +108,9 @@ module Message
 
 	def self.reset
 		@sprite_changed = true
+	end
+
+	def self.goto k
+		@index = @labels[k]
 	end
 end
