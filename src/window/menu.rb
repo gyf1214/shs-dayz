@@ -4,10 +4,10 @@ class WindowMenu < WindowSelection
 	RWIDTH = 75
 
 	def initialize
-		items = ["Auto", "Save", "Load", "Skip"]
+		items = ["Auto", "Save", "Load", "Skip", "Log"]
 		x = 900 - items.size * RWIDTH
 		@helpers = Array.new
-		super x, 576, 400, 24, items
+		super x, 576, 500, 24, items
 		self.windowskin = Assets.system "window_naked"
 		@index = -1
 		bind_back method(:process_back)

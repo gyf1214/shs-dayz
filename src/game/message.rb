@@ -4,6 +4,7 @@ module Message
 	@background = nil
 	@sprite_changed = false
 	@labels = Hash.new
+	@backlog = Array.new
 
 	def self.push str
 		@data.push str
@@ -112,5 +113,9 @@ module Message
 
 	def self.goto k
 		@index = @labels[k]
+	end
+
+	def self.backlog
+		backlog
 	end
 end

@@ -7,6 +7,7 @@ module Interpreter
 		when :text
 			@main_window.next_page msg
 			recover if @skipping == 1 and !Flag.read?(Message.chapter, Message.index) and !Flag.global[:unread]
+			Message.backlog.push msg
 			Flag.read Message.chapter, Message.index
 			Flag.dump
 		when :select
@@ -65,6 +66,7 @@ module Interpreter
 		@choice = button
 		@select_window.close
 		@main_window.activate
+		Message.backlog.push text: @main_window.items[button]
 		page_listener 0
 	end
 end
