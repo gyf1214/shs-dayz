@@ -116,6 +116,6 @@ module Message
 	end
 
 	def self.backlog
-		backlog
+		@backlog
 	end
 end

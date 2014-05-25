@@ -106,7 +106,7 @@ module GMD
 
 	def self.process file, data
 		@data = data
-		instance_eval file
+			instance_eval file
 	end
 
 	def self.label k

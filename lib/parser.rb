@@ -45,7 +45,12 @@ module Parser
 	def load_text files
 		data = Hash.new
 		files.each do |path|
-			GMD.process File.read(path).force_encoding("utf-8"), data
+			begin
+				GMD.process File.read(path).force_encoding("utf-8"), data
+			rescue Exception => e
+				puts e.message
+				raise path
+			end
 		end
 		data
 	end
