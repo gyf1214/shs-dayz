@@ -46,7 +46,7 @@ module GMD
 				background v
 			end
 		else
-			name = c
+			name = c.to_s
 		end
 		yield
 		@data.store name, text: @now, label: @label
