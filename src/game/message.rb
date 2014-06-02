@@ -118,4 +118,8 @@ module Message
 	def self.backlog
 		@backlog
 	end
+
+	def self.backlog= backlog
+		@backlog = backlog
+	end
 end

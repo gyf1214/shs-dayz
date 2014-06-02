@@ -44,6 +44,7 @@ class WindowMulti < WindowSelection
 	def draw_item index
 		rect = item_rect index
 		contents.clear_rect rect
+		rect
 	end
 
 	def update_padding

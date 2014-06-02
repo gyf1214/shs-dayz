@@ -69,6 +69,7 @@ module Game
 		data[:background] = Message.background_path
 		data[:snap] = Utility.dump_bitmap @scene.snap
 		data[:flags] = Flag.flags
+		data[:backlog] = Message.backlog
 		save_data data, path
 	end
 
@@ -78,6 +79,7 @@ module Game
 		Message.index = data[:index]
 		Message.sprites = data[:sprite]
 		Message.background = data[:background]
+		Message.backlog = data[:backlog]
 		Flag.flags = data[:flags]
 	end
 end

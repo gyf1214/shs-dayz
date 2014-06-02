@@ -7,9 +7,6 @@ module Interpreter
 		when :text
 			@main_window.next_page msg
 			recover if @skipping == 1 and !Flag.read?(Message.chapter, Message.index) and !Flag.global[:unread]
-			Message.backlog.push msg
-			Flag.read Message.chapter, Message.index
-			Flag.dump
 		when :select
 			open_select msg[:choices]
 			return true

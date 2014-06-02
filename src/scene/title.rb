@@ -39,6 +39,7 @@ class SceneTitle < Scene
 		when 0
 			Flag.flags.clear
 			Message.chapter = 'prolog'
+			Message.backlog.clear
 			Game.call SceneMain.new
 		when 1
 			Game.call SceneSave.new(false)

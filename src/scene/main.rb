@@ -56,6 +56,11 @@ class SceneMain < Scene
 
 	def page_listener button
 		loop do
+			if Message.top[:type] == :text
+				Message.backlog.push Message.top
+				Flag.read Message.chapter, Message.index
+				Flag.dump
+			end
 			Message.pop
 			break if process_message
 		end
@@ -82,6 +87,9 @@ class SceneMain < Scene
 
 			@duration = DURE
 			@main_window.process_ok :ok
+		when 4
+			Message.reset
+			Game.call SceneLog.new
 		end
 		@main_window.menu.index = -1
 	end
