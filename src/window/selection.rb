@@ -4,6 +4,10 @@ class WindowSelection < WindowBase
 	attr_reader :items
 	attr_reader :index
 
+	def rheight
+		WLH
+	end
+
 	def initialize x, y, width, height, items = Array.new
 		@items = items
 		@index = if items.empty? then -1 else 0 end
@@ -14,7 +18,7 @@ class WindowSelection < WindowBase
 
 	def contents_height
 		h = super
-		[h - h % WLH, @items.size * WLH].max
+		[h - h % rheight, @items.size * rheight].max
 	end
 
 	def auto_width
@@ -46,17 +50,17 @@ class WindowSelection < WindowBase
 	end
 
 	def top
-		self.oy / WLH
+		self.oy / rheight
 	end
 
 	def top= index
 		index = 0 if index < 0
 		index = @items.size - 1 if index > @items.size - 1
-		self.oy = index * WLH
+		self.oy = index * rheight
 	end
 
 	def page
-		[1, (self.height - MARGIN * 2) / WLH].max
+		[1, (self.height - MARGIN * 2) / rheight].max
 	end
 
 	def bottom
@@ -70,7 +74,7 @@ class WindowSelection < WindowBase
 	def item_rect index
 		rect = text_size @items[index]
 		rect.width += MARGIN * 2
-		rect.y = index * WLH
+		rect.y = index * rheight
 		if rect.width > contents.width
 			rect.width = contents.width
 			rect.x = 0
@@ -105,12 +109,12 @@ class WindowSelection < WindowBase
 		super
 		if Mouse.over?(self) and Mouse.move?
 			y = Mouse.pos[1] - self.y - MARGIN
-			if y / WLH < 0
+			if y / rheight < 0
 				@index = -1
-			elsif y / WLH > @items.size - 1
+			elsif y / rheight > @items.size - 1
 				@index = @items.size
 			else
-				@index = y / WLH
+				@index = y / rheight
 			end
 		end
 	end
@@ -128,7 +132,7 @@ class WindowSelection < WindowBase
 
 	def update_padding
 		super
-		surplus = (self.height - self.padding * 2) % WLH
+		surplus = (self.height - self.padding * 2) % rheight
 		self.padding_bottom = surplus + self.padding
 	end
 

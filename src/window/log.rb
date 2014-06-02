@@ -18,7 +18,7 @@ class WindowLog < WindowMulti
 	end
 
 	def initialize items
-		surplus = rows - items.size
+		surplus = rows * cols - items.size
 		surplus.times do
 			items.unshift nil
 		end
@@ -30,53 +30,11 @@ class WindowLog < WindowMulti
 		rect = super(index)
 		return if @items[index].nil?
 		contents.font.color.alpha = if enable then 255 else 127 end
-		contents.draw_text rect, @items[index][:text], 1
-	end
-
-	def contents_height
-		[super, @items.size * rheight].max
-	end
-
-	def move direction
-		self.index = (@index + direction) % @items.size
-	end
-
-	def top
-		self.oy / rheight
-	end
-
-	def top= index
-		index = 0 if index < 0
-		index = @items.size - 1 if index > @items.size - 1
-		self.oy = index * rheight
-	end
-
-	def page
-		[1, (self.height - MARGIN * 2) / rheight].max
-	end
-
-	def bottom
-		top + page - 1
-	end
-
-	def bottom= index
-		self.top = index - page + 1
-	end
-
-	def index= index
-		@index = index
-		cursor_update
-	end
-
-	def cursor_update
-		if @index < 0 or @index >= @items.size
-			self.cursor_rect.empty
-		else
-			last = self.bottom
-			self.top = @index if @index < top
-			self.bottom = @index if @index > bottom
-			rect = item_rect @index
-			self.cursor_rect = rect
+		text_rect = Rect.new rect.x + 100, rect.y, rect.width - 100, rect.height
+		cha_rect = Rect.new rect.x, rect.y, 100, rect.height
+		contents.draw_text text_rect, @items[index][:text]
+		unless @items[index][:character].nil?
+			contents.draw_text cha_rect, @items[index][:character], 1
 		end
 	end
 end

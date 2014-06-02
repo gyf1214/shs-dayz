@@ -63,7 +63,7 @@ module Interpreter
 		@choice = button
 		@select_window.close
 		@main_window.activate
-		Message.backlog.push text: @select_window.items[button]
+		Message.backlog.push text: @select_window.items[button], character: "（选项）"
 		page_listener 0
 	end
 end

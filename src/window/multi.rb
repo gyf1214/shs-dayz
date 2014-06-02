@@ -14,14 +14,25 @@ class WindowMulti < WindowSelection
 	end
 
 	def initialize items
+		surplus = rows * cols - items.size
+		surplus.times do
+			items.push nil
+		end
 		width = cols * rwidth + MARGIN * 2
 		height = rows * rheight + MARGIN * 2
 		super (1024 - width) / 2, (640 - height) / 2, width, height, items
 		@index = -1
 	end
 
+	def real_rows
+		ret = @items.size / cols
+		ret += 1 unless @items.size % cols == 0
+		ret
+	end
+
 	def contents_height
-		height - MARGIN * 2
+		h = height - MARGIN * 2
+		[h - h % rheight, real_rows * rheight].max
 	end
 
 	def item_rect index
@@ -30,15 +41,18 @@ class WindowMulti < WindowSelection
 	end
 
 	def cursor_update
-		if @index < 0 or @index >= rows * cols
+		if @index < 0 or @index >= @items.size
 			self.cursor_rect.empty
 		else
+			line = @index / cols
+			self.top = line if line < top
+			self.bottom = line if line > bottom
 			self.cursor_rect = item_rect @index
 		end
 	end
 
 	def move direction
-		@index = (@index + direction) % (rows * cols)
+		self.index = (@index + direction) % @items.size
 	end
 
 	def draw_item index
