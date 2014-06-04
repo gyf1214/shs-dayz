@@ -80,7 +80,7 @@ class WindowMulti < WindowSelection
 		if Mouse.move?
 			if Mouse.over?(self)
 				x = Mouse.pos[0] - self.x - MARGIN
-				y = Mouse.pos[1] - self.y - MARGIN
+				y = Mouse.pos[1] - self.y - MARGIN + self.oy
 				x = [0, x].max
 				@index = y / rheight * cols + [cols - 1, x / rwidth].min
 			else

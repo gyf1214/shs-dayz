@@ -108,7 +108,7 @@ class WindowSelection < WindowBase
 	def mouse_update
 		super
 		if Mouse.over?(self) and Mouse.move?
-			y = Mouse.pos[1] - self.y - MARGIN
+			y = Mouse.pos[1] - self.y - MARGIN + self.oy
 			if y / rheight < 0
 				@index = -1
 			elsif y / rheight > @items.size - 1
